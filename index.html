@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>敬请期待 - 无限火石</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #e9ecef;
+        }
+        h1 {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            color: #ff8fab;
+            font-weight: 700;
+        }
+        .subtitle {
+            font-size: 1.6rem;
+            margin-bottom: 30px;
+            color: #9ca3af;
+        }
+        .launch-date {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 30px 0;
+            color: #f472b6;
+        }
+        .description {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #4b5563;
+        }
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .countdown-item {
+            background: #fdf2f8;
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 80px;
+            border: 1px solid #fecdd3;
+        }
+        .countdown-number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #ec4899;
+        }
+        .countdown-label {
+            font-size: 1rem;
+            color: #9ca3af;
+            margin-top: 5px;
+        }
+        .footer {
+            margin-top: 30px;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 30px;
+            }
+            h1 {
+                font-size: 3.5rem;
+            }
+            .launch-date {
+                font-size: 2.5rem;
+            }
+            .countdown {
+                gap: 15px;
+            }
+            .countdown-item {
+                padding: 12px;
+                min-width: 70px;
+            }
+            .countdown-number {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="countdown" id="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">00</div>
+                <div class="countdown-label">day</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">hour</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">min</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">sec</div>
+            </div>
+        </div>
+        
+
+    </div>
+            <div class="footer">
+            <p>© 2026 Turbo Flint</p>
+        </div>
+    <script>
+        function updateCountdown() {
+            const launchDate = new Date('2026-07-30T00:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = launchDate - now;
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').innerText = days.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+        }
+        
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
