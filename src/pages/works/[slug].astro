@@ -1,0 +1,47 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { site, works, type Work } from '../../data/universe';
+
+// works 数组里每加一条，这里就会自动多生成一个详情页
+export function getStaticPaths() {
+  return works.map((w) => ({
+    params: { slug: w.slug },
+    props: { w },
+  }));
+}
+
+const { w } = Astro.props as { w: Work };
+
+// 没填 readUrl 时默认指向站内阅读页；填了 http 链接则自动在新标签打开
+const readHref = w.readUrl ?? `/works/${w.slug}/read`;
+const readExternal = /^https?:\/\//.test(readHref);
+---
+
+<Layout title={`${w.title} | ${site.name} ${site.nameCn} 小说宇宙`} description={w.blurb}>
+  <section class="detail work-hero" style={w.tint ? `--tint:${w.tint}` : undefined}>
+    <div class="container">
+      <div class="detail-head" data-reveal>
+        <p class="detail-eyebrow">{w.genre}</p>
+        <h1 class="detail-title">{w.title}</h1>
+        <span class="work-status" data-s={w.status}>{w.status}</span>
+      </div>
+
+      <div class="detail-actions" data-reveal>
+        <a
+          class="btn btn-primary"
+          href={readHref}
+          target={readExternal ? '_blank' : undefined}
+          rel={readExternal ? 'noopener' : undefined}
+        >
+          {w.readLabel ?? '开始阅读'} <span aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn-ghost" href="/#works">← 返回作品</a>
+      </div>
+
+      <div class="detail-body" data-reveal>
+        <p class="detail-lead">{w.blurb}</p>
+        {w.summary.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+</Layout>

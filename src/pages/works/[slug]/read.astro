@@ -1,0 +1,35 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { site, works, type Work } from '../../../data/universe';
+
+// 站内阅读页占位：works 里填了 readUrl（外部平台 / 你的正文地址）后，这个页面就不会被用到
+export function getStaticPaths() {
+  return works.map((w) => ({
+    params: { slug: w.slug },
+    props: { w },
+  }));
+}
+
+const { w } = Astro.props as { w: Work };
+---
+
+<Layout title={`阅读 ${w.title} | ${site.name} ${site.nameCn} 小说宇宙`} description={w.blurb}>
+  <section class="detail work-hero" style={w.tint ? `--tint:${w.tint}` : undefined}>
+    <div class="container">
+      <div class="detail-head" data-reveal>
+        <p class="detail-eyebrow">{w.genre}</p>
+        <h1 class="detail-title">{w.title}</h1>
+        <span class="work-status" data-s={w.status}>{w.status}</span>
+      </div>
+
+      <div class="detail-body" data-reveal>
+        <p class="detail-lead">正文还在书写中。</p>
+        <p>这一页的线尚未被写完。等它亮起来的时候，你就是第一个读到它的人。</p>
+      </div>
+
+      <div class="detail-back" data-reveal>
+        <a class="btn btn-ghost" href={`/works/${w.slug}`}>← 返回作品</a>
+      </div>
+    </div>
+  </section>
+</Layout>

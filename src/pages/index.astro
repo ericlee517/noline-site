@@ -1,0 +1,82 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site, worldview, characters, works } from '../data/universe';
+---
+
+<Layout>
+  {/* ---------- Hero ---------- */}
+  <section class="hero">
+    <div class="container">
+      <h1 class="hero-title" data-reveal>{site.name}</h1>
+      <p class="hero-intro" data-reveal>{site.intro}</p>
+      <div class="hero-actions" data-reveal>
+      </div>
+    </div>
+    <a class="hero-scroll" href="#worldview" aria-label="向下滚动">
+      <span>SCROLL</span>
+      <span class="hero-scroll-line" aria-hidden="true"></span>
+    </a>
+  </section>
+
+  {/* ---------- 世界观简介 ---------- */}
+  <section id="worldview">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="section-eyebrow">{worldview.eyebrow}</span>
+        <h2 class="section-title">{worldview.title}</h2>
+      </div>
+      <div class="worldview-body" data-reveal>
+        {worldview.paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- 角色介绍 ---------- */}
+  <section id="characters">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="section-eyebrow">Characters</span>
+        <h2 class="section-title">角色介绍</h2>
+      </div>
+      <div class="char-list">
+        {characters.map((c, i) => (
+          <a class="char-row" data-reveal style={`--tint:${c.tint}`} href={`/characters/${c.slug}`}>
+            <span class="char-index">{String(i + 1).padStart(2, '0')}</span>
+            <div class="char-id">
+              <p class="char-alias">{c.alias}</p>
+              <h3 class="char-name">{c.name}</h3>
+              <span class="char-role">{c.role}</span>
+            </div>
+            <p class="char-desc">{c.desc}</p>
+            <span class="char-more" aria-hidden="true">→</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- 宇宙下的作品 ---------- */}
+  <section id="works" class="works">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="section-eyebrow">Works</span>
+        <h2 class="section-title">宇宙下的作品</h2>
+      </div>
+      <div class="work-list">
+        {works.map((w) => (
+          <a class="work-row" data-reveal style={w.tint ? `--tint:${w.tint}` : undefined} href={`/works/${w.slug}`}>
+            <div class="work-meta">
+              <span class="work-genre">{w.genre}</span>
+              <span class="work-status" data-s={w.status}>{w.status}</span>
+            </div>
+            <div class="work-row-body">
+              <h3 class="work-title">{w.title}</h3>
+              <span class="work-more" aria-hidden="true">→</span>
+            </div>
+            <p class="work-blurb">{w.blurb}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

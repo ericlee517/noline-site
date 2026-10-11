@@ -1,0 +1,95 @@
+---
+import '../styles/global.css';
+import { site, footer } from '../data/universe';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${site.name} ${site.nameCn}官网 - By Turbo Flint`,
+  description = site.intro,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="nav-shell">
+      <nav class="nav-inner container">
+        <a class="brand" href="#top">
+          <span class="brand-text">{site.name}</span>
+        </a>
+        <ul class="nav-links">
+          {site.nav.map((item) => (
+            <li><a href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </header>
+
+    <main id="top">
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-row">
+        <a class="brand" href="/">
+          <span class="brand-text">{site.name}</span>
+        </a>
+        <div class="footer-nav">
+          <ul class="footer-links">
+            {footer.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+          </ul>
+          {footer.social && footer.social.length > 0 && (
+            <ul class="footer-links">
+              {footer.social.map((s) => <li><a href={s.href}>{s.label}</a></li>)}
+            </ul>
+          )}
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>© {new Date().getFullYear()} <a href="https://wildtree.turboflint.cn/" target="_blank">Wildtree</a>. 保留所有权利。</span>
+        <span>{footer.note}</span>
+      </div>
+    </footer>
+
+    <script>
+      // 轻量滚动入场：仅在可见时添加 .is-visible，不依赖任何动画库
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-visible');
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+      );
+      document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+
+      // 导航在滚动后加一层毛玻璃底色
+      const shell = document.querySelector('.nav-shell');
+      const onScroll = () => {
+        if (shell) shell.classList.toggle('scrolled', window.scrollY > 24);
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    </script>
+  </body>
+</html>

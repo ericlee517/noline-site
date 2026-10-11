@@ -1,0 +1,35 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { site, characters, type Character } from '../../data/universe';
+
+// characters 数组里每加一条，这里就会自动多生成一个详情页
+export function getStaticPaths() {
+  return characters.map((c) => ({
+    params: { slug: c.slug },
+    props: { c },
+  }));
+}
+
+const { c } = Astro.props as { c: Character };
+---
+
+<Layout title={`${c.name} · ${c.role} | ${site.name} ${site.nameCn} 小说宇宙`} description={c.desc}>
+  <section class="detail char-hero" style={`--tint:${c.tint}`}>
+    <div class="container">
+      <div class="detail-head" data-reveal>
+        <p class="detail-eyebrow">{c.alias}</p>
+        <h1 class="detail-title">{c.name}</h1>
+        <span class="char-role">{c.role}</span>
+      </div>
+
+      <div class="detail-body" data-reveal>
+        <p class="detail-lead">{c.desc}</p>
+        {c.bio.map((p) => <p>{p}</p>)}
+      </div>
+
+      <div class="detail-back" data-reveal>
+        <a class="btn btn-ghost" href="/#characters">← 返回角色</a>
+      </div>
+    </div>
+  </section>
+</Layout>
